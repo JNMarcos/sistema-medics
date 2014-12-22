@@ -12,11 +12,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RepositorioProcedimento implements IRepositorioProcedimento {
+public class RepositorioProcedimento implements IRepositorioProcedimento, Serializable {
 	ArrayList<Procedimento> lista;
 	public static CadastroProcedimento cadastroProcedimento = new CadastroProcedimento();
 
@@ -98,7 +99,7 @@ public class RepositorioProcedimento implements IRepositorioProcedimento {
 			criarLista();
 
 		lista.add(procedimento);
-		// salvarArquivo();
+		salvarArquivo();
 
 	}
 
@@ -112,7 +113,7 @@ public class RepositorioProcedimento implements IRepositorioProcedimento {
 			if (nome.equals(auxiliarNome)) {
 				lista.remove(i);
 				removeu = true;
-				// salvarArquivo();
+				salvarArquivo();
 			}
 		}
 

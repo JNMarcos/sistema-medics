@@ -4,9 +4,10 @@
 
 package medics.negocio.classes_basicas;
 
+import java.io.Serializable;
 import java.util.Collections;
 
-public class Procedimento implements Comparable<Procedimento> {
+public class Procedimento implements Comparable<Procedimento>, Serializable {
     private String nome;
 
 	public String getNome() {

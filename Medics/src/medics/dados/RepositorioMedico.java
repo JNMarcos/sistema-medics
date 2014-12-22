@@ -15,10 +15,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class RepositorioMedico implements IRepositorioMedico {
+public class RepositorioMedico implements IRepositorioMedico, Serializable {
 	ArrayList<Medico> lista;
 	public static CadastroMedico cadastroMedico = new CadastroMedico();
 
@@ -102,8 +103,8 @@ public class RepositorioMedico implements IRepositorioMedico {
         boolean senha = procurarSenha(medico.getSenha());
 		if (!cpf && !login && !senha ) {
 			lista.add(medico); 
-
-			//salvarArquivo();
+			salvarArquivo();
+			
 		} else if(cpf){
 			throw new CpfExistenteException();
 		} else if(login){
@@ -122,7 +123,7 @@ public class RepositorioMedico implements IRepositorioMedico {
 				if (cpf.equals(lista.get(i).getCpf())) {
 					lista.remove(i);
 					removeu = true;
-					//salvarArquivo();
+				    salvarArquivo();
 				}
 			}
 

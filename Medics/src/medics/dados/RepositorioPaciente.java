@@ -16,7 +16,7 @@ import medics.negocio.exceptions.CpfExistenteException;
 import medics.negocio.exceptions.NaoEncontradoException;
 import medics.negocio.CadastroPaciente;
 
-public class RepositorioPaciente implements IRepositorioPaciente {
+public class RepositorioPaciente implements IRepositorioPaciente, Serializable {
 	ArrayList<Paciente> lista;
 
 	private static RepositorioPaciente instance;
@@ -96,7 +96,7 @@ public class RepositorioPaciente implements IRepositorioPaciente {
         	criarLista();
 		if (!procurarCpf(paciente.getCpf())) {
 			lista.add(paciente);
-			//salvarArquivo();
+			salvarArquivo();
 		} else {
 			throw new CpfExistenteException();
 		}
@@ -111,7 +111,7 @@ public class RepositorioPaciente implements IRepositorioPaciente {
 				if (cpf.equals(lista.get(i).getCpf())) {
 					lista.remove(i); 
 					removeu = true;
-					//salvarArquivo();
+					salvarArquivo();
 				}
 			}	
 	}

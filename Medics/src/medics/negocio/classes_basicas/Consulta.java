@@ -7,9 +7,10 @@
 
 package medics.negocio.classes_basicas;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Consulta implements Comparable<Consulta> {
+public class Consulta implements Comparable<Consulta>, Serializable {
 	private Paciente paciente;
 	private Medico medico;
 	private Procedimento procedimento;

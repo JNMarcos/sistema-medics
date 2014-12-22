@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Date;
 
@@ -19,7 +20,7 @@ import medics.negocio.CadastroConsulta;
 
 import java.util.ArrayList;
 
-public class RepositorioConsulta implements IRepositorioConsulta {
+public class RepositorioConsulta implements IRepositorioConsulta, Serializable {
 	ArrayList<Consulta> lista;
 	public static CadastroConsulta cadastroConsulta = new CadastroConsulta();
 
@@ -152,7 +153,8 @@ public class RepositorioConsulta implements IRepositorioConsulta {
 				if (lista == null)
 					criarLista();
 				lista.add(consulta);
-				// salvarArquivo();
+				salvarArquivo();
+				
 			} else {
 				throw new CodigoExistenteException();
 			}

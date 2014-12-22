@@ -1,6 +1,8 @@
 package medics.negocio.classes_basicas;
 
-public abstract class Pessoa implements Comparable<Pessoa> {
+import java.io.Serializable;
+
+public abstract class Pessoa implements Comparable<Pessoa>, Serializable{
 	private String primeiroNome;
 	private String segundoNome;
 	private String cpf;
