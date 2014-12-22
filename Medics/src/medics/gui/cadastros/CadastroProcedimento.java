@@ -44,6 +44,7 @@ public class CadastroProcedimento extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setLocationRelativeTo(null);
 
 		tfProcedimento = new JTextField();
 		tfProcedimento.setBounds(140, 27, 132, 20);

@@ -45,6 +45,7 @@ public  class PrimeiraTela extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 277, 306);
+		setLocationRelativeTo(null);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -113,6 +114,7 @@ public  class PrimeiraTela extends JFrame {
 		});
 		btnSair.setBounds(90, 137, 89, 23);
 		contentPane.add(btnSair);
+
 	}
 
 }

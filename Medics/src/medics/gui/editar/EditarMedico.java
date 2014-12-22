@@ -46,6 +46,7 @@ public class EditarMedico extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setLocationRelativeTo(null);
 		
 		JLabel lblNewLabel = new JLabel("Nome:");
 		lblNewLabel.setBounds(33, 44, 46, 14);

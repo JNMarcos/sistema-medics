@@ -30,7 +30,7 @@ public class ExibirMedico extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+		setLocationRelativeTo(null);
 		
 		JLabel lblNome = new JLabel("Nome:");
 		lblNome.setBounds(43, 47, 46, 14);

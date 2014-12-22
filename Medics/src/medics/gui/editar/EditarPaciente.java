@@ -45,7 +45,7 @@ public class EditarPaciente extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
+		setLocationRelativeTo(null);
 
 		rua = new JTextField();
 		rua.setText(paciente.getRua());

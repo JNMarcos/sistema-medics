@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
 
 import medics.gui.controladores.Pacientes;
 import medics.negocio.Fachada;
@@ -22,7 +23,10 @@ import medics.negocio.exceptions.CpfExistenteException;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.text.ParseException;
 import java.util.ArrayList;
+
+import javax.swing.JFormattedTextField;
 
 public class CadastroPaciente extends JFrame {
 	public static IFachada fachada = Fachada.getInstance();
@@ -30,12 +34,12 @@ public class CadastroPaciente extends JFrame {
 	private JPanel contentPane;
 	private JTextField nome;
 	private JTextField sobrenome;
-	private JTextField cpf;
 	private JTextField rua;
 	private JTextField bairro;
 	private JTextField cidade;
-	private JTextField telefone;
 	private JTextField email;
+	private JFormattedTextField cpf;
+	private JFormattedTextField telefone;
 
 	public CadastroPaciente(DefaultTableModel modelo) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -51,6 +55,7 @@ public class CadastroPaciente extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setLocationRelativeTo(null);
 
 		nome = new JTextField();
 		nome.setBounds(70, 38, 86, 20);
@@ -61,11 +66,6 @@ public class CadastroPaciente extends JFrame {
 		sobrenome.setBounds(259, 38, 86, 20);
 		contentPane.add(sobrenome);
 		sobrenome.setColumns(10);
-
-		cpf = new JTextField();
-		cpf.setBounds(70, 69, 86, 20);
-		contentPane.add(cpf);
-		cpf.setColumns(10);
 
 		JComboBox dia = new JComboBox();
 		dia.addItem("1");
@@ -271,59 +271,75 @@ public class CadastroPaciente extends JFrame {
 		contentPane.add(cidade);
 		cidade.setColumns(10);
 
-		telefone = new JTextField();
-		telefone.setBounds(70, 170, 86, 20);
-		contentPane.add(telefone);
-		telefone.setColumns(10);
-
 		email = new JTextField();
 		email.setBounds(222, 170, 150, 20);
 		contentPane.add(email);
 		email.setColumns(10);
 
+		try {
+			cpf = new JFormattedTextField(new MaskFormatter("###.###.###-##"));
+			cpf.setBounds(70, 69, 86, 20);
+			contentPane.add(cpf);
+		} catch (ParseException e1) {
+			cpf.setText("");
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			telefone = new JFormattedTextField(new MaskFormatter("(##) ####-###"));
+		} catch (ParseException e2) {
+			telefone.setText("");
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		telefone.setBounds(70, 170, 86, 20);
+		contentPane.add(telefone);
+
 		JButton btCadastrar = new JButton("Cadastrar");
 		btCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (nome.getText().equals("")) {
-					JOptionPane.showMessageDialog(null,
-							"Nome inválido ! ", "Medics",
-							JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Nome inválido ! ",
+							"Medics", JOptionPane.ERROR_MESSAGE);
 				} else if (sobrenome.getText().equals("")) {
-					JOptionPane.showMessageDialog(null,
-							"Sobrenome inválido !", "Medics",
-							JOptionPane.ERROR_MESSAGE);
-				}else if (telefone.getText().equals("")) {
-					JOptionPane.showMessageDialog(null,
-							"Telefone inválido !", "Medics",
-							JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Sobrenome inválido !",
+							"Medics", JOptionPane.ERROR_MESSAGE);
+				} else if (telefone.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Telefone inválido !",
+							"Medics", JOptionPane.ERROR_MESSAGE);
+				} else if (cpf.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "CPF inválido !",
+							"Medics", JOptionPane.ERROR_MESSAGE);
+				} else {
+					Paciente paciente = new Paciente();
+
+					paciente.setPrimeiroNome(nome.getText());
+					paciente.setSegundoNome(sobrenome.getText());
+					paciente.setCpf(cpf.getText());
+					paciente.setRua(rua.getText());
+					paciente.setBairro(bairro.getText());
+					paciente.setCidade(cidade.getText());
+					paciente.setTelefone(telefone.getText());
+					paciente.setEmail(email.getText());
+					paciente.setDia((String) dia.getSelectedItem());
+					paciente.setMes((String) mes.getSelectedItem());
+					paciente.setAno((String) ano.getSelectedItem());
+
+					try {
+						fachada.cadastrarPaciente(paciente);
+						JOptionPane.showMessageDialog(null,
+								"Cadastrado com sucesso !");
+						Pacientes tela = new Pacientes();
+						tela.carregarTabela(modelo);
+						setVisible(false);
+					} catch (CpfExistenteException e1) {
+						JOptionPane.showMessageDialog(null, e1,
+								"CPF existente ! Digite um CPF válido",
+								JOptionPane.ERROR_MESSAGE);
+					}
+
 				}
-				Paciente paciente = new Paciente();
-
-				paciente.setPrimeiroNome(nome.getText());
-				paciente.setSegundoNome(sobrenome.getText());
-				paciente.setCpf(cpf.getText());
-				paciente.setRua(rua.getText());
-				paciente.setBairro(bairro.getText());
-				paciente.setCidade(cidade.getText());
-				paciente.setTelefone(telefone.getText());
-				paciente.setEmail(email.getText());
-				paciente.setDia((String) dia.getSelectedItem());
-				paciente.setMes((String) mes.getSelectedItem());
-				paciente.setAno((String) ano.getSelectedItem());
-
-				try {
-					fachada.cadastrarPaciente(paciente);
-					JOptionPane.showMessageDialog(null,
-							"Cadastrado com sucesso !");
-					Pacientes tela = new Pacientes();
-					tela.carregarTabela(modelo);
-					setVisible(false);
-				} catch (CpfExistenteException e1) {
-					JOptionPane.showMessageDialog(null, e1,
-							"CPF existente ! Digite um CPF válido",
-							JOptionPane.ERROR_MESSAGE);
-				}
-
 			}
 		});
 		btCadastrar.setBounds(198, 223, 95, 23);
@@ -373,6 +389,6 @@ public class CadastroPaciente extends JFrame {
 		JLabel lblNewLabel_8 = new JLabel("Email:");
 		lblNewLabel_8.setBounds(166, 173, 46, 14);
 		contentPane.add(lblNewLabel_8);
-	}
 
+	}
 }

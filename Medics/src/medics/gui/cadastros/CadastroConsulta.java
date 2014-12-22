@@ -7,8 +7,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
 
 import java.awt.Toolkit;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -38,6 +40,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JTextField;
+import javax.swing.JFormattedTextField;
 
 public class CadastroConsulta extends JFrame {
 	public static IFachada fachada = Fachada.getInstance();
@@ -49,7 +52,7 @@ public class CadastroConsulta extends JFrame {
 	private DefaultTableModel modeloPaciente = new DefaultTableModel();
 	private DefaultTableModel modeloMedico = new DefaultTableModel();
 	private DefaultTableModel modeloProcedimento = new DefaultTableModel();
-	private JTextField codigo;
+	private JFormattedTextField codigo;
 
 	public CadastroConsulta(DefaultTableModel modelo) {
 		setResizable(false);
@@ -64,6 +67,7 @@ public class CadastroConsulta extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setLocationRelativeTo(null);
 
 		pacientes = new JTable(modeloPaciente);
 		pacientes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -305,16 +309,23 @@ public class CadastroConsulta extends JFrame {
 		ano.addItem("1881");
 		ano.setBounds(161, 485, 59, 20);
 		contentPane.add(ano);
+		
+	    try {
+			codigo = new JFormattedTextField(new MaskFormatter("######"));
+		} catch (ParseException e3) {
+			codigo.setText("");
+			JOptionPane.showMessageDialog(null,
+					"Código inválido ! ", "Medics",
+					JOptionPane.ERROR_MESSAGE);
+			e3.printStackTrace();
+		}
+		codigo.setBounds(449, 485, 67, 20);
+		contentPane.add(codigo);
 
 		JButton btnNewButton = new JButton("Cadastrar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (codigo.getText().equals("")) {
-					JOptionPane.showMessageDialog(null,
-							"Código inválido ! ", "Medics",
-							JOptionPane.ERROR_MESSAGE);
-				} else {
-
+				
 					int paciente_selecionado = pacientes.getSelectedRow();
 					int medico_selecionado = medicos.getSelectedRow();
 					int procedimento_selecionado = procedimentos
@@ -368,7 +379,6 @@ public class CadastroConsulta extends JFrame {
 									JOptionPane.ERROR_MESSAGE);
 						}
 					}
-				}
 			}
 		});
 		btnNewButton.setBounds(666, 484, 110, 23);
@@ -386,11 +396,7 @@ public class CadastroConsulta extends JFrame {
 		JLabel lblNewLabel = new JLabel("Codigo:");
 		lblNewLabel.setBounds(398, 488, 46, 14);
 		contentPane.add(lblNewLabel);
-
-		codigo = new JTextField();
-		codigo.setBounds(454, 485, 86, 20);
-		contentPane.add(codigo);
-		codigo.setColumns(10);
+	
 	}
 
 	public static void carregarTabelaPacientes(DefaultTableModel modelo) {

@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
 
 import java.awt.Toolkit;
 
@@ -28,6 +29,9 @@ import medics.negocio.exceptions.SenhaExistenteException;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.text.ParseException;
+
+import javax.swing.JFormattedTextField;
 
 public class CadastroMedico extends JFrame {
 	public static IFachada fachada = Fachada.getInstance();
@@ -35,15 +39,15 @@ public class CadastroMedico extends JFrame {
 	private JPanel contentPane;
 	private JTextField nome;
 	private JTextField sobrenome;
-	private JTextField cpf;
 	private JTextField rua;
 	private JTextField bairro;
 	private JTextField cidade;
-	private JTextField telefone;
 	private JTextField email;
 	private JTextField login;
 	private JTextField senha;
 	private JTextField especialidade;
+	private JFormattedTextField cpf;
+	private JFormattedTextField telefone;
 
 	public CadastroMedico(DefaultTableModel modelo) {
 		setResizable(false);
@@ -58,6 +62,7 @@ public class CadastroMedico extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setLocationRelativeTo(null);
 
 		JLabel lblNewLabel = new JLabel("Nome:");
 		lblNewLabel.setBounds(33, 29, 46, 14);
@@ -126,11 +131,6 @@ public class CadastroMedico extends JFrame {
 		contentPane.add(sobrenome);
 		sobrenome.setColumns(10);
 
-		cpf = new JTextField();
-		cpf.setBounds(89, 51, 86, 20);
-		contentPane.add(cpf);
-		cpf.setColumns(10);
-
 		rua = new JTextField();
 		rua.setBounds(88, 76, 143, 20);
 		contentPane.add(rua);
@@ -145,11 +145,6 @@ public class CadastroMedico extends JFrame {
 		cidade.setBounds(241, 101, 86, 20);
 		contentPane.add(cidade);
 		cidade.setColumns(10);
-
-		telefone = new JTextField();
-		telefone.setBounds(89, 127, 86, 20);
-		contentPane.add(telefone);
-		telefone.setColumns(10);
 
 		email = new JTextField();
 		email.setBounds(241, 127, 152, 20);
@@ -359,6 +354,26 @@ public class CadastroMedico extends JFrame {
 		ano.addItem("1882");
 		ano.addItem("1881");
 		contentPane.add(ano);
+		
+		try {
+			cpf = new JFormattedTextField(new MaskFormatter("###.###.###-##"));
+		} catch (ParseException e4) {
+			cpf.setText("");
+			// TODO Auto-generated catch block
+			e4.printStackTrace();
+		}
+		cpf.setBounds(89, 51, 86, 20);
+		contentPane.add(cpf);
+		
+		try {
+			telefone = new JFormattedTextField(new MaskFormatter("(##) ####-###"));
+		} catch (ParseException e4) {
+			telefone.setText("");
+			// TODO Auto-generated catch block
+			e4.printStackTrace();
+		}
+		telefone.setBounds(89, 126, 86, 20);
+		contentPane.add(telefone);
 
 		JButton btnNewButton = new JButton("Cadastrar");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -383,6 +398,9 @@ public class CadastroMedico extends JFrame {
 					JOptionPane.showMessageDialog(null,
 							"Especialidade inválida ! ", "Medics",
 							JOptionPane.ERROR_MESSAGE);
+				} else if (cpf.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "CPF inválido !",
+							"Medics", JOptionPane.ERROR_MESSAGE);
 				} else {
 					Medico medico = new Medico();
 
