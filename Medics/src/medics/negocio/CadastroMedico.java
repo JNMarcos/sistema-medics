@@ -1,16 +1,18 @@
 package medics.negocio;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import medics.dados.IRepositorioMedico;
 import medics.dados.RepositorioMedico;
-import medics.gui.TelaTextual;
 import medics.negocio.classes_basicas.Medico;
 import medics.negocio.exceptions.ArrayVazioException;
+import medics.negocio.exceptions.CpfExistenteException;
+import medics.negocio.exceptions.LoginExistenteException;
 import medics.negocio.exceptions.NaoEncontradoException;
+import medics.negocio.exceptions.SenhaExistenteException;
 
 public class CadastroMedico {
-	TelaTextual tela = new TelaTextual();
 	Scanner input = new Scanner(System.in);
 	private IRepositorioMedico repositorio;
 
@@ -18,21 +20,12 @@ public class CadastroMedico {
 		this.repositorio = RepositorioMedico.getInstance();
 	}
 
-	public void cadastrar(Medico medico) {
+	public void cadastrar(Medico medico) throws CpfExistenteException, LoginExistenteException, SenhaExistenteException {
 		repositorio.cadastrar(medico);
 	}
 
-	public void modificar(String primeiroNome, String segundoNome, String opt,
-			String novo) throws ArrayVazioException, NaoEncontradoException {
-
-		repositorio.modificar(primeiroNome, segundoNome, opt, novo);
-
-	}
-
-	public void remover(String primeiroNome, String segundoNome)
-			throws ArrayVazioException, NaoEncontradoException {
-
-		repositorio.remover(primeiroNome, segundoNome);
+	public void remover(String cpf){
+		repositorio.remover(cpf);
 
 	}
 
@@ -43,6 +36,18 @@ public class CadastroMedico {
 
 	public void salvar() {
 		RepositorioMedico.salvarArquivo();
+	}
+	
+	public Medico exibir(String cpf){
+		return repositorio.exibir(cpf);
+	}
+	
+	public Medico exibirPorLogin(String senha, String login){
+		return repositorio.exibirPorLogin(senha,login);
+	}
+	
+	public ArrayList<Medico> getList(){
+		return repositorio.getLista();
 	}
 
 }

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import medics.negocio.classes_basicas.Consulta;
+import medics.negocio.classes_basicas.Medico;
+import medics.negocio.exceptions.CodigoExistenteException;
+import medics.negocio.exceptions.MedicoOcupadoException;
 
 public interface IRepositorioConsulta {
 
@@ -13,19 +16,17 @@ public interface IRepositorioConsulta {
 
 	public abstract void setLista(ArrayList<Consulta> lista);
 
-	public abstract void cadastrar(String primeiroNomePaciente,
-			String segundoNomePaciente, String primeiroNomeMedico,
-			String segundoNomeMedico, String procedimento, Date data, int hora,
-			int minuto);
+	public abstract void cadastrar(String cpfPaciente, String cpfMedico,
+			String procedimento, String dia, String mes, String ano, String hora, String codigo) throws CodigoExistenteException, MedicoOcupadoException;
+	
+	public abstract void modificar(String dia, String mes, String ano, String codigo, String hora);
 
-	public abstract void modificarData(Date data, int hora, int minuto,
-			String primeiroNomeMedico, String segundoNomeMedico, Date novaData);
-
-	public abstract void modificarHora(Date data, int hora, int minuto,
-			String primeiroNomeMedico, String segundoNomeMedico, int novaHora, int novoMinuto);
-
-	public abstract void exibir();
-
-	public abstract void remover(Date data, String hora);
+	public abstract void remover(String codigo);
+	
+	public abstract ArrayList<Consulta> agendaMedico(Medico medico);
+	
+	public abstract boolean pesquisarHoraOcupada( String cpfMedico,
+			String procedimento, String dia, String mes, String ano,
+			String hora);
 
 }

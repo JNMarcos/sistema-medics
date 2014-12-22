@@ -8,18 +8,15 @@ import medics.negocio.exceptions.NaoEncontradoException;
 
 public interface IRepositorioProcedimento {
 
-	public void criarLista();
+	public abstract void criarLista();
 	
-	public ArrayList<Procedimento> getLista();
+	public abstract ArrayList<Procedimento> getLista();
 
-	public void setLista(ArrayList<Procedimento> lista);
+	public abstract void setLista(ArrayList<Procedimento> lista);
 
-	public void cadastrar(Procedimento procedimento);
+	public abstract void cadastrar(Procedimento procedimento);
 
-	public void modificar(String nomeProcurado, String novoNome) throws ArrayVazioException, NaoEncontradoException;
+	public abstract void remover(String nome);
 	
-	public void exibir();
-
-	public void remover(String nome) throws ArrayVazioException, NaoEncontradoException;
 	
 }

@@ -1,8 +1,6 @@
 package medics.negocio.classes_basicas;
 
-import java.util.Date;
-
-public abstract class Pessoa {
+public abstract class Pessoa implements Comparable<Pessoa> {
 	private String primeiroNome;
 	private String segundoNome;
 	private String cpf;
@@ -102,5 +100,35 @@ public abstract class Pessoa {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((cpf == null) ? 0 : cpf.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Pessoa other = (Pessoa) obj;
+		if (cpf == null) {
+			if (other.cpf != null)
+				return false;
+		} else if (!cpf.equals(other.cpf))
+			return false;
+		return true;
+	}
+	
+    public int compareTo(Pessoa pessoa) {
+        return this.getPrimeiroNome().compareToIgnoreCase(pessoa.getPrimeiroNome());
+        
+    }
 
 }

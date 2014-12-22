@@ -1,4 +1,4 @@
-package medics.gui.frames;
+package medics.gui.sobre;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -21,7 +21,7 @@ public class Sobre extends JFrame {
 	public Sobre() {
 	    setVisible(true);
 		setTitle("Medics");
-		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Kalefe\\Desktop\\Sem t\u00EDtulo.png"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Kalefe\\Desktop\\Medics\\Sem t\u00EDtulo.png"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 416, 190);
 		contentPane = new JPanel();

@@ -5,26 +5,22 @@ import medics.negocio.IFachada;
 import medics.negocio.exceptions.NaoEncontradoException;
 
 public class Secretario {
-	private String login = "admin";
-	private String senha = "admin";
+	private String login;
+	private String senha;
 	
-	/*private static IFachada instance;
+	private static Secretario instance;
 	
 	private Secretario(){
-		 // Construtor privado para evitar instanciação fora da classe
-	}
-	
-	/**
-	 * Implementando padrão Singleton
-	 * 
-	 * @return A instância da desta fachada
-	 
-	public static IFachada getInstance() {
+		 this.login = "admin";
+		 this.senha = "admin";
+	}	
+ 
+	public static Secretario getInstance() {
         if (instance == null) {
-            instance = new Fachada();
+            instance = new Secretario();
         }
         return instance;
-    }*/
+    }
 	
 	public String getLogin() {
 		return login;

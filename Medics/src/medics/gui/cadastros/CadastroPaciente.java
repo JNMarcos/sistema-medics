@@ -1,4 +1,4 @@
-package medics.gui.frames;
+package medics.gui.cadastros;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -12,8 +12,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
-import medics.gui.panel.Pacientes;
+import medics.gui.controladores.Pacientes;
 import medics.negocio.Fachada;
 import medics.negocio.IFachada;
 import medics.negocio.classes_basicas.Paciente;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 
 public class CadastroPaciente extends JFrame {
 	public static IFachada fachada = Fachada.getInstance();
+	private DefaultTableModel modelo = new DefaultTableModel();
 	private JPanel contentPane;
 	private JTextField nome;
 	private JTextField sobrenome;
@@ -35,14 +37,15 @@ public class CadastroPaciente extends JFrame {
 	private JTextField telefone;
 	private JTextField email;
 
-	public CadastroPaciente() {
+	public CadastroPaciente(DefaultTableModel modelo) {
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.modelo = modelo;
 		setVisible(true);
 
 		setIconImage(Toolkit.getDefaultToolkit().getImage(
-				"C:\\Users\\Kalefe\\Desktop\\Sem t\u00EDtulo.png"));
+				"C:\\Users\\Kalefe\\Desktop\\Medics\\Sem t\u00EDtulo.png"));
 		setResizable(false);
 		setTitle("Medics");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -281,6 +284,19 @@ public class CadastroPaciente extends JFrame {
 		JButton btCadastrar = new JButton("Cadastrar");
 		btCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (nome.getText().equals("")) {
+					JOptionPane.showMessageDialog(null,
+							"Nome inválido ! ", "Medics",
+							JOptionPane.ERROR_MESSAGE);
+				} else if (sobrenome.getText().equals("")) {
+					JOptionPane.showMessageDialog(null,
+							"Sobrenome inválido !", "Medics",
+							JOptionPane.ERROR_MESSAGE);
+				}else if (telefone.getText().equals("")) {
+					JOptionPane.showMessageDialog(null,
+							"Telefone inválido !", "Medics",
+							JOptionPane.ERROR_MESSAGE);
+				}
 				Paciente paciente = new Paciente();
 
 				paciente.setPrimeiroNome(nome.getText());
@@ -291,17 +307,20 @@ public class CadastroPaciente extends JFrame {
 				paciente.setCidade(cidade.getText());
 				paciente.setTelefone(telefone.getText());
 				paciente.setEmail(email.getText());
-				paciente.setDia(dia.getName());
-				paciente.setMes(mes.getName());
-				// paciente.setAno(ano.getName());
+				paciente.setDia((String) dia.getSelectedItem());
+				paciente.setMes((String) mes.getSelectedItem());
+				paciente.setAno((String) ano.getSelectedItem());
+
 				try {
 					fachada.cadastrarPaciente(paciente);
 					JOptionPane.showMessageDialog(null,
 							"Cadastrado com sucesso !");
 					Pacientes tela = new Pacientes();
+					tela.carregarTabela(modelo);
 					setVisible(false);
 				} catch (CpfExistenteException e1) {
-					JOptionPane.showMessageDialog(null, e1, "Não Cadastrado !",
+					JOptionPane.showMessageDialog(null, e1,
+							"CPF existente ! Digite um CPF válido",
 							JOptionPane.ERROR_MESSAGE);
 				}
 
@@ -348,7 +367,7 @@ public class CadastroPaciente extends JFrame {
 		contentPane.add(lblNewLabel_6);
 
 		JLabel lblNewLabel_7 = new JLabel("Telefone:");
-		lblNewLabel_7.setBounds(14, 173, 60, 14);
+		lblNewLabel_7.setBounds(10, 170, 60, 14);
 		contentPane.add(lblNewLabel_7);
 
 		JLabel lblNewLabel_8 = new JLabel("Email:");

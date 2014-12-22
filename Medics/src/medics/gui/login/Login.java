@@ -1,4 +1,4 @@
-package medics.gui.panel;
+package medics.gui.login;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -7,10 +7,12 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
 
-import medics.gui.frames.PrimeiraTela;
-import medics.gui.frames.TelaSecretario;
+import medics.gui.primeira_tela.PrimeiraTela;
+import medics.gui.principais_telas.TelaMedico;
+import medics.gui.principais_telas.TelaSecretario;
 import medics.negocio.Fachada;
 import medics.negocio.IFachada;
+import medics.negocio.classes_basicas.Medico;
 import medics.negocio.exceptions.NaoEncontradoException;
 
 import java.awt.event.ActionListener;
@@ -20,6 +22,7 @@ public class Login extends JPanel {
 	private JTextField tfLogin;
 	private JPasswordField pwSenha;
 	public static IFachada fachada = Fachada.getInstance();
+	private JFrame atualFrame;
 
 	/**
 	 * Create the panel.
@@ -39,6 +42,7 @@ public class Login extends JPanel {
 						fachada.verificarLogin(login, senha);
 						frame.setVisible(false);
 						TelaSecretario proximaTela = new TelaSecretario();
+						proximaTela.setAtualFrame(proximaTela);
 					} catch (NaoEncontradoException e1) {
                          invalido.setText("Usuário ou senha inválido.");
                          tfLogin.setText("");
@@ -47,6 +51,8 @@ public class Login extends JPanel {
 				}else{
 					try {
 						fachada.verificarLoginMedico(login, senha);
+						frame.setVisible(false);
+						TelaMedico proximaTela = new TelaMedico(null, senha, login);
 					} catch (NaoEncontradoException e2) {
 	                     invalido.setText("Usuário ou senha inválido.");
                          tfLogin.setText("");
@@ -61,6 +67,7 @@ public class Login extends JPanel {
 		JButton btCancelar = new JButton("Cancelar");
 		btCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				atualFrame.setVisible(false);
 				PrimeiraTela.main(null);
 			}
 		});
@@ -91,5 +98,13 @@ public class Login extends JPanel {
 		lblBemVindoAo.setBounds(78, 171, 172, 14);
 		super.add(lblBemVindoAo);
 
+	}
+	
+	public JFrame getAtualFrame() {
+		return atualFrame;
+	}
+
+	public void setAtualFrame(JFrame atualFrame) {
+		this.atualFrame = atualFrame;
 	}
 }

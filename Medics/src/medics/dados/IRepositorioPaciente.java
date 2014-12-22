@@ -1,5 +1,6 @@
 package medics.dados;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import medics.negocio.classes_basicas.Paciente;
@@ -15,15 +16,12 @@ public interface IRepositorioPaciente {
 
 	public abstract void setLista(ArrayList<Paciente> lista);
 
-	public void cadastrar(Paciente paciente) throws CpfExistenteException;
-
-	public abstract void modificar(String primeiroNome, String segundoNome,
-			String opt, String novo) throws ArrayVazioException,
-			NaoEncontradoException;
-
-	public abstract void exibir();
-
-	public abstract void remover(String primeiroNome, String segundoNome)
-			throws ArrayVazioException, NaoEncontradoException;
+	public abstract void cadastrar(Paciente paciente) throws CpfExistenteException;
+	
+	public abstract void remover(String cpf);
+	
+	public abstract Paciente exibir(String cpf);
+	
+	public abstract boolean procurarCpf(String cpf);
 
 }

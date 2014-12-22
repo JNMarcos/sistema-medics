@@ -3,12 +3,18 @@ package medics.negocio;
 import java.util.ArrayList;
 import java.util.Date;
 
+import medics.negocio.classes_basicas.Consulta;
 import medics.negocio.classes_basicas.Medico;
 import medics.negocio.classes_basicas.Paciente;
+import medics.negocio.classes_basicas.Procedimento;
 import medics.negocio.classes_basicas.Secretario;
 import medics.negocio.exceptions.ArrayVazioException;
+import medics.negocio.exceptions.CodigoExistenteException;
 import medics.negocio.exceptions.CpfExistenteException;
+import medics.negocio.exceptions.LoginExistenteException;
+import medics.negocio.exceptions.MedicoOcupadoException;
 import medics.negocio.exceptions.NaoEncontradoException;
+import medics.negocio.exceptions.SenhaExistenteException;
 
 public class Fachada implements IFachada {
 	CadastroPaciente cadastroPaciente = new CadastroPaciente();
@@ -17,117 +23,124 @@ public class Fachada implements IFachada {
 	CadastroConsulta cadastroConsulta = new CadastroConsulta();
 
 	private static IFachada instance;
-	
-	private Fachada(){
-		 // Construtor privado para evitar instanciação fora da classe
+
+	private Fachada() {
+		// Construtor privado para evitar instanciação fora da classe
 	}
-	
+
 	/**
 	 * Implementando padrão Singleton
 	 * 
 	 * @return A instância da desta fachada
 	 */
 	public static IFachada getInstance() {
-        if (instance == null) {
-            instance = new Fachada();
-        }
-        return instance;
-    }
+		if (instance == null) {
+			instance = new Fachada();
+		}
+		return instance;
+	}
 
-	public void cadastrarPaciente(Paciente paciente) throws CpfExistenteException {
+	public void cadastrarPaciente(Paciente paciente)
+			throws CpfExistenteException {
 		cadastroPaciente.cadastrar(paciente);
 	}
 
-	public void editarPaciente(String primeiroNome, String segundoNome,
-			String opt, String novo) throws ArrayVazioException,
-			NaoEncontradoException {
-
-		cadastroPaciente.modificar(primeiroNome, segundoNome, opt, novo);
-
+	public void removerPaciente(String cpf) {
+		cadastroPaciente.remover(cpf);
 	}
 
-	public void removerPaciente(String primeiroNome, String segundoNome)
-			throws ArrayVazioException, NaoEncontradoException {
-		cadastroPaciente.remover(primeiroNome, segundoNome);
-	}
-	
-	public void salvarPaciente(){
+	public void salvarPaciente() {
 		cadastroPaciente.salvar();
 	}
-	
-	public ArrayList<Paciente> retornarListaPaciente(){
+
+	public ArrayList<Paciente> retornarListaPaciente() {
 		return cadastroPaciente.getList();
 	}
 
-	public void cadastrarMedico(Medico medico) {
+	public Paciente exibirPaciente(String cpf) {
+		return cadastroPaciente.exibir(cpf);
+	}
+
+	public void cadastrarMedico(Medico medico) throws CpfExistenteException,
+			LoginExistenteException, SenhaExistenteException {
 		cadastroMedico.cadastrar(medico);
 	}
 
-	public void editarMedico(String primeiroNome, String segundoNome,
-			String opt, String novo) throws ArrayVazioException,
-			NaoEncontradoException {
-		cadastroMedico.modificar(primeiroNome, segundoNome, opt, novo);
+	public void removerMedico(String cpf) {
+		cadastroMedico.remover(cpf);
 	}
 
-	public void removerMedico(String primeiroNome, String segundoNome)
-			throws ArrayVazioException, NaoEncontradoException {
-		cadastroPaciente.remover(primeiroNome, segundoNome);
-	}
-	
-	public void salvarMedico(){
+	public void salvarMedico() {
 		cadastroMedico.salvar();
 	}
 
-	public void cadastrarProcedimento(String nome) {
-		cadastroProcedimento.cadastrar(nome);
+	public ArrayList<Medico> retornarListaMedico() {
+		return cadastroMedico.getList();
 	}
 
-	public void editarProcedimento(String nome, String novo)
-			throws ArrayVazioException, NaoEncontradoException {
-		cadastroProcedimento.modificar(nome, novo);
+	public Medico exibirMedico(String cpf) {
+		return cadastroMedico.exibir(cpf);
 	}
 
-	public void removerProcedimento(String nome) throws ArrayVazioException,
-			NaoEncontradoException {
+	public Medico exibirMedicoPorLogin(String senha, String login) {
+		return cadastroMedico.exibirPorLogin(senha, login);
+	}
+
+	public ArrayList<Consulta> agendaMedico(Medico medico) {
+		return cadastroConsulta.agenda(medico);
+	}
+
+	public void cadastrarProcedimento(Procedimento novo) {
+		cadastroProcedimento.cadastrar(novo);
+	}
+
+	public void removerProcedimento(String nome) {
 		cadastroProcedimento.remover(nome);
 	}
-	
-	public void salvarProcedimento(){
+
+	public void salvarProcedimento() {
 		cadastroProcedimento.salvar();
 	}
 
-	public void verificarLogin(String login, String senha) throws NaoEncontradoException {
-		Secretario secretario = new Secretario();
+	public ArrayList<Procedimento> retornarListaProcedimento() {
+		return cadastroProcedimento.getList();
+	}
+
+	public void verificarLogin(String login, String senha)
+			throws NaoEncontradoException {
+		Secretario secretario = Secretario.getInstance();
 		secretario.verificarLogin(login, senha);
 
 	}
 
-	public void verificarLoginMedico(String login, String senha) throws NaoEncontradoException {
+	public void verificarLoginMedico(String login, String senha)
+			throws NaoEncontradoException {
 		cadastroMedico.verificarLogin(login, senha);
 	}
 
-	public void cadastrarConsuta(String primeiroNomePaciente,
-			String segundoNomePaciente, String primeiroNomeMedico,
-			String segundoNomeMedico, String procedimento, Date data,
-			String hora) {
-		/*cadastroConsulta
-				.cadastrar(primeiroNomePaciente, segundoNomePaciente,
-						primeiroNomeMedico, segundoNomeMedico, procedimento,
-						data, hora);*/
+	public void cadastrarConsulta(String cpfPaciente, String cpfMedico,
+			String procedimento, String dia, String mes, String ano,
+			String hora, String codigo) throws CodigoExistenteException, MedicoOcupadoException {
+		cadastroConsulta.cadastrar(cpfPaciente, cpfMedico, procedimento, dia,
+				mes, ano, hora, codigo);
+
 	}
 
-	public void editarConsulta(Date data, String hora,
-			String primeiroNomeMedico, String segundoNomeMedico, String opt,
-			String novo) {
-		cadastroConsulta.modificar(data, hora, primeiroNomeMedico, segundoNomeMedico, opt, novo);
+	public void editarConsulta(String dia, String mes, String ano,
+			String codigo, String hora) {
+		cadastroConsulta.modificar(dia, mes, ano, codigo, hora);
 	}
 
-	public void removerConsulta(Date data, String hora) {
-		cadastroConsulta.remover(data, hora);
+	public void removerConsulta(String codigo) {
+		cadastroConsulta.remover(codigo);
 	}
-	
-	public void salvarConsulta(){
+
+	public void salvarConsulta() {
 		cadastroConsulta.salvar();
+	}
+
+	public ArrayList<Consulta> retornarListaConsulta() {
+		return cadastroConsulta.getList();
 	}
 
 }

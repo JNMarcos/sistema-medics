@@ -1,32 +1,12 @@
-/**
- * Essa classe representa o repositorio de medicos.
- * 
- * As saídas e entradas são feitas na GUI e comunicacao 
- * é feita através da camada de dados, são passadas infomações
- * para camadas de dados que dá as repostas para a GUI. Para 
- * isso códigos de comunição são usados.
- * 
- * Tabela de códigos:
- * @codigo 1 - "Digite o nome do paciente-"
- * @codigo 2 - "O que deseja editar ?"
- * @codigo 3 - "Novo nome- " 
- * @codigo 4 - "Novo CPF- "
- * @codigo 5 - "Novo bairro- "
- * @codigo 6 - "Nova especialidade- "
- * @codigo 7 - "Novo telefone- "
- * @codigo 8 - "Medico não encontrado."
- * @codigo 9 - "Não existe medicos."
- * @codigo 10 - "Lista vazia."
- * @codigo 11 - "Nome para remoção"
- * @codigo 12 - "Removido com sucesso."
- * @codigo 13 - "Medico não encontrado !"
- */
-
 package medics.dados;
 
 import medics.negocio.classes_basicas.Medico;
+import medics.negocio.classes_basicas.Paciente;
 import medics.negocio.exceptions.ArrayVazioException;
+import medics.negocio.exceptions.CpfExistenteException;
+import medics.negocio.exceptions.LoginExistenteException;
 import medics.negocio.exceptions.NaoEncontradoException;
+import medics.negocio.exceptions.SenhaExistenteException;
 import medics.negocio.CadastroMedico;
 
 import java.io.File;
@@ -36,175 +16,193 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class RepositorioMedico implements IRepositorioMedico {
 	ArrayList<Medico> lista;
 	public static CadastroMedico cadastroMedico = new CadastroMedico();
-	
+
 	private static RepositorioMedico instance;
 
-    public static IRepositorioMedico getInstance() {
-        if (instance == null) {
-            instance = lerDoArquivo();
-        }
-        return instance;
-    }
+	public static IRepositorioMedico getInstance() {
+		if (instance == null) {
+			instance = lerDoArquivo();
+		}
+		return instance;
+	}
 
-    private static RepositorioMedico lerDoArquivo() {
-        RepositorioMedico instanciaLocal = null;
+	private static RepositorioMedico lerDoArquivo() {
+		RepositorioMedico instanciaLocal = null;
 
-        File in = new File("repositorioMedico.dat");
-        FileInputStream fis = null;
-        ObjectInputStream ois = null;
-        try {
-            fis = new FileInputStream(in);
-            ois = new ObjectInputStream(fis);
-            Object o = ois.readObject();
-            instanciaLocal = (RepositorioMedico) o;
-        } catch (Exception e) {
-            instanciaLocal = new RepositorioMedico();
-        } finally {
-            if (ois != null) {
-                try {
-                    ois.close();
-                } catch (IOException e) {/* Silent exception */
-                }
-            }
-        }
+		File in = new File("repositorioMedico.dat");
+		FileInputStream fis = null;
+		ObjectInputStream ois = null;
+		try {
+			fis = new FileInputStream(in);
+			ois = new ObjectInputStream(fis);
+			Object o = ois.readObject();
+			instanciaLocal = (RepositorioMedico) o;
+		} catch (Exception e) {
+			instanciaLocal = new RepositorioMedico();
+		} finally {
+			if (ois != null) {
+				try {
+					ois.close();
+				} catch (IOException e) {/* Silent exception */
+				}
+			}
+		}
 
-        return instanciaLocal;
-    }
+		return instanciaLocal;
+	}
 
-    public static void salvarArquivo() {
-        if (instance == null) {
-            return;
-        }
-        File out = new File("repositorioMedico.dat");
-        FileOutputStream fos = null;
-        ObjectOutputStream oos = null;
-        
-        try {
-            fos = new FileOutputStream(out);
-            oos = new ObjectOutputStream(fos);
-            oos.writeObject(instance);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (oos != null) {
-                try { oos.close(); } catch (IOException e) {/*Silent*/}
-            }
-        }
-    }
+	public static void salvarArquivo() {
+		if (instance == null) {
+			return;
+		}
+		File out = new File("repositorioMedico.dat");
+		FileOutputStream fos = null;
+		ObjectOutputStream oos = null;
+
+		try {
+			fos = new FileOutputStream(out);
+			oos = new ObjectOutputStream(fos);
+			oos.writeObject(instance);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (oos != null) {
+				try {
+					oos.close();
+				} catch (IOException e) {/* Silent */
+				}
+			}
+		}
+	}
 
 	public void criarLista() {
 		lista = new ArrayList<Medico>();
 	}
 
 	public ArrayList<Medico> getLista() {
+		if(lista != null)
+		Collections.sort(lista);
 		return lista;
 	}
 
 	public void setLista(ArrayList<Medico> lista) {
 		this.lista = lista;
 	}
+	
+	public void cadastrar(Medico medico) throws CpfExistenteException, LoginExistenteException, SenhaExistenteException {
+        if(lista == null)
+        	criarLista();
+        boolean cpf = procurarCpf(medico.getCpf());
+        boolean login = procurarLogin(medico.getLogin());
+        boolean senha = procurarSenha(medico.getSenha());
+		if (!cpf && !login && !senha ) {
+			lista.add(medico); 
 
-	public void cadastrar(Medico medico) {
-		lista.add(medico);
-	}
-
-	public void modificar(String primeiroNome, String segundoNome, String opt,
-			String novo) throws ArrayVazioException, NaoEncontradoException {
-		boolean achou = false;
-		try {
-
-			int indicePesquisa;
-
-			for (indicePesquisa = 0; indicePesquisa <= lista.size()
-					&& achou == false; indicePesquisa++) {
-
-				if (primeiroNome.equals(lista.get(indicePesquisa)
-						.getPrimeiroNome())
-						&& segundoNome.equals(lista.get(indicePesquisa)
-								.getSegundoNome())) {
-					achou = true;
-				}
-			}
-
-			if (achou == true) {
-
-				switch (opt) {
-
-				case "2":
-					lista.get(indicePesquisa - 1).setCpf(novo);
-					break;
-				case "3":
-					lista.get(indicePesquisa - 1).setBairro(novo);
-					break;
-				case "4":
-					lista.get(indicePesquisa - 1).setCidade(novo);
-					break;
-				case "5":
-					lista.get(indicePesquisa - 1).setEspecialidade(novo);
-					break;
-				case "6":
-					lista.get(indicePesquisa - 1).setSenha(novo);
-					break;
-				}
-			}
-		} catch (NullPointerException e) {
-			throw new ArrayVazioException();
-		}
-		if (achou == false) {
-			throw new NaoEncontradoException();
+			//salvarArquivo();
+		} else if(cpf){
+			throw new CpfExistenteException();
+		} else if(login){
+			throw new LoginExistenteException();
+		}else if(senha){
+			throw new SenhaExistenteException();
 		}
 	}
 
-	public void exibir() {
-		/*
-		 * if (lista != null && lista[0] != null) {
-		 * cadastroMedico.exibirListaProcedimentoMedico(lista, contador); } else
-		 * { cadastroMedico.saidaParaRepositorioMedico(10); }
-		 */
-	}
-
-	public void remover(String primeiroNome, String segundoNome)
-			throws ArrayVazioException, NaoEncontradoException {
+	public void remover(String cpf){
 		int i;
 		boolean removeu = false;
-		try {
+		
+			for (i = 0; i < lista.size() && removeu == true; i++) {
 
-			for (i = 0; i <= lista.size() && removeu == true; i++) {
-
-				if (primeiroNome.equals(lista.get(i).getPrimeiroNome())
-						&& segundoNome.equals(lista.get(i).getSegundoNome())) {
+				if (cpf.equals(lista.get(i).getCpf())) {
 					lista.remove(i);
 					removeu = true;
-					salvarArquivo();
+					//salvarArquivo();
 				}
 			}
 
-		} catch (NullPointerException e) {
-			throw new ArrayVazioException();
-		}
-		if (i == lista.size()) {
-			throw new NaoEncontradoException();
-		}
+		
 	}
 
-	public void verificarLogin(String login, String senha) throws NaoEncontradoException {
-        boolean achou = false;
-        try{
-		for (int i = 0; i < lista.size(); i++) {
-			if (login.equals(lista.get(i).getLogin())
-					&& senha.equals(lista.get(i).getSenha()))
+	public void verificarLogin(String login, String senha)
+			throws NaoEncontradoException {
+		boolean achou = false;
+		try {
+			for (int i = 0; i < lista.size(); i++) {
+				if (login.equals(lista.get(i).getLogin())
+						&& senha.equals(lista.get(i).getSenha()))
+					achou = true;
+			}
+
+			if (achou == false)
+				throw new NaoEncontradoException();
+			
+		} catch (NullPointerException e1) {
+			throw new NaoEncontradoException();
+
+		}
+	
+	}
+	
+	
+	public Medico exibir(String cpf){
+		boolean achou = false;
+		
+		int i;
+		for( i=0 ; i<lista.size() && achou == false; i++){
+			if(lista.get(i).getCpf().equals(cpf))
 				achou = true;
 		}
 		
-		if(achou == false)
-			 throw new NaoEncontradoException();
-        }catch(NullPointerException e1){
-			 throw new NaoEncontradoException();
-        }
+		return lista.get(i-1);
+	}
+	
+	public Medico exibirPorLogin(String login, String senha){
+		for(int i=0; i<lista.size(); i++){
+			if(lista.get(i).getLogin().equals(login) && lista.get(i).getSenha().equals(senha)){
+				return lista.get(i);
+			}
+		}
+		
+		return new Medico();
+	}
+	
+	public boolean procurarCpf(String cpf) {
+		boolean achou = false;
+		if (lista != null) {
+			for (int i = 0; i < lista.size() && achou == false; i++) {
+				if (cpf.equals(lista.get(i).getCpf()))
+					achou = true;
+			}
+		}
+		return achou;
+	}
+	
+	public boolean procurarLogin(String login) {
+		boolean achou = false;
+		if (lista != null) {
+			for (int i = 0; i < lista.size() && achou == false; i++) {
+				if (login.equals(lista.get(i).getLogin()))
+					achou = true;
+			}
+		}
+		return achou;
+	}
+	
+	public boolean procurarSenha(String senha) {
+		boolean achou = false;
+		if (lista != null) {
+			for (int i = 0; i < lista.size() && achou == false; i++) {
+				if (senha.equals(lista.get(i).getSenha()))
+					achou = true;
+			}
+		}
+		return achou;
 	}
 
 }

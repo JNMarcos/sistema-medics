@@ -1,4 +1,4 @@
-package medics.gui.frames;
+package medics.gui.primeira_tela;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -13,7 +13,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JButton;
 
-import medics.gui.panel.Login;
+import medics.gui.login.Login;
+import medics.gui.sobre.Sobre;
+import medics.negocio.Fachada;
+import medics.negocio.IFachada;
 
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -22,30 +25,19 @@ import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
 import java.awt.Color;
 
-public class PrimeiraTela extends JFrame {
+public  class PrimeiraTela extends JFrame {
     private static PrimeiraTela frame;
 	private JPanel contentPane;
-
-	/**
-	 * Launch the application.
-	 */
+	public static boolean instanciar;
+	private static PrimeiraTela instance;
+	
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					frame = new PrimeiraTela();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		 frame = new PrimeiraTela();
+		 frame.setVisible(true);
 	}
-
-	/**
-	 * Create the frame.
-	 */
+	
 	public PrimeiraTela() {
+	    setVisible(true);
 		setForeground(Color.YELLOW);
 		setBackground(SystemColor.desktop);
 		setTitle("Medics");
@@ -88,6 +80,7 @@ public class PrimeiraTela extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 	       	    repaint();
 	      		Login login = new Login(true, frame);
+	      		login.setAtualFrame(frame);
 	      		setContentPane(login);
 	    		contentPane.setLayout(null);
 	            validate();
@@ -102,6 +95,7 @@ public class PrimeiraTela extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 	       	    repaint();
 	      		Login login = new Login(false, frame);
+	      		login.setAtualFrame(frame);
 	      		setContentPane(login);
 	    		contentPane.setLayout(null);
 	            validate();
