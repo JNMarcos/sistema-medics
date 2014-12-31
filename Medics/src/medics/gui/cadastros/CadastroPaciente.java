@@ -287,7 +287,7 @@ public class CadastroPaciente extends JFrame {
 		}
 		
 		try {
-			telefone = new JFormattedTextField(new MaskFormatter("(##) ####-###"));
+			telefone = new JFormattedTextField(new MaskFormatter("(##) ####-####"));
 		} catch (ParseException e2) {
 			telefone.setText("");
 			// TODO Auto-generated catch block
@@ -308,7 +308,7 @@ public class CadastroPaciente extends JFrame {
 				} else if (telefone.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Telefone inválido !",
 							"Medics", JOptionPane.ERROR_MESSAGE);
-				} else if (cpf.getText().equals("")) {
+				} else if (cpf.getText().equals("") || cpf.getText().length() < 7) {
 					JOptionPane.showMessageDialog(null, "CPF inválido !",
 							"Medics", JOptionPane.ERROR_MESSAGE);
 				} else {

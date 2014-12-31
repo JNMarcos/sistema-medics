@@ -132,7 +132,7 @@ public class ExibirMedico extends JFrame {
 		
 		JLabel telefone = new JLabel("");
 		telefone.setText(medico.getTelefone());
-		telefone.setBounds(81, 154, 72, 14);
+		telefone.setBounds(64, 154, 109, 14);
 		contentPane.add(telefone);
 		
 		JLabel email = new JLabel("");

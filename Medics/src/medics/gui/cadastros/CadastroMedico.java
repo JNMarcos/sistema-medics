@@ -366,7 +366,7 @@ public class CadastroMedico extends JFrame {
 		contentPane.add(cpf);
 		
 		try {
-			telefone = new JFormattedTextField(new MaskFormatter("(##) ####-###"));
+			telefone = new JFormattedTextField(new MaskFormatter("(##) ####-####"));
 		} catch (ParseException e4) {
 			telefone.setText("");
 			// TODO Auto-generated catch block
@@ -398,7 +398,7 @@ public class CadastroMedico extends JFrame {
 					JOptionPane.showMessageDialog(null,
 							"Especialidade inválida ! ", "Medics",
 							JOptionPane.ERROR_MESSAGE);
-				} else if (cpf.getText().equals("")) {
+				} else if (cpf.getText().equals("") || cpf.getText().length() < 7) {
 					JOptionPane.showMessageDialog(null, "CPF inválido !",
 							"Medics", JOptionPane.ERROR_MESSAGE);
 				} else {

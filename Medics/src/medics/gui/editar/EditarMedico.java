@@ -116,19 +116,19 @@ public class EditarMedico extends JFrame {
 		
 		telefone = new JTextField();
 		telefone.setText(antigoMedico.getTelefone());
-		telefone.setBounds(101, 141, 86, 20);
+		telefone.setBounds(101, 141, 113, 20);
 		contentPane.add(telefone);
 		telefone.setColumns(10);
 		
 		email = new JTextField();
 		email.setText(antigoMedico.getEmail());
-		email.setBounds(290, 141, 86, 20);
+		email.setBounds(261, 141, 155, 20);
 		contentPane.add(email);
 		email.setColumns(10);
 		
 		cidade = new JTextField();
 		cidade.setText(antigoMedico.getCidade());
-		cidade.setBounds(290, 116, 86, 20);
+		cidade.setBounds(290, 116, 104, 20);
 		contentPane.add(cidade);
 		cidade.setColumns(10);
 		
@@ -165,7 +165,7 @@ public class EditarMedico extends JFrame {
 		
 		JLabel cpf = new JLabel("");
 		cpf.setText(antigoMedico.getCpf());
-		cpf.setBounds(80, 69, 76, 14);
+		cpf.setBounds(59, 69, 97, 14);
 		contentPane.add(cpf);
 		
 		JLabel ano = new JLabel("");

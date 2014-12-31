@@ -63,7 +63,7 @@ public class ExibirPaciente extends JFrame {
 		contentPane.add(lblCidae);
 		
 		JLabel lblTelefone = new JLabel("Telefone:");
-		lblTelefone.setBounds(33, 154, 79, 14);
+		lblTelefone.setBounds(23, 154, 79, 14);
 		contentPane.add(lblTelefone);
 		
 		JLabel lblEmail = new JLabel("Email:");
@@ -134,7 +134,7 @@ public class ExibirPaciente extends JFrame {
 		
 		JLabel telefone = new JLabel("");
 		telefone.setText(paciente.getTelefone());
-		telefone.setBounds(99, 154, 74, 14);
+		telefone.setBounds(81, 154, 92, 14);
 		contentPane.add(telefone);
 		
 		JLabel email = new JLabel("");

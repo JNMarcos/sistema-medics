@@ -153,7 +153,7 @@ public class EditarPaciente extends JFrame {
 		
 		JLabel sobrenome = new JLabel("");
 		sobrenome.setText(paciente.getSegundoNome());
-		sobrenome.setBounds(233, 41, 179, 14);
+		sobrenome.setBounds(255, 41, 179, 14);
 		contentPane.add(sobrenome);
 		
 		JLabel cpf = new JLabel("");

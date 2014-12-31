@@ -118,7 +118,7 @@ public class RepositorioMedico implements IRepositorioMedico, Serializable {
 		int i;
 		boolean removeu = false;
 		
-			for (i = 0; i < lista.size() && removeu == true; i++) {
+			for (i = 0; i < lista.size() && removeu == false; i++) {
 
 				if (cpf.equals(lista.get(i).getCpf())) {
 					lista.remove(i);

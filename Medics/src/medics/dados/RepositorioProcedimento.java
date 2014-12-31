@@ -107,7 +107,7 @@ public class RepositorioProcedimento implements IRepositorioProcedimento, Serial
 		int i;
 		boolean removeu = false;
 
-		for (i = 0; i <= lista.size() && removeu == true; i++) {
+		for (i = 0; i < lista.size() && removeu == false; i++) {
 			String auxiliarNome = lista.get(i).getNome();
 
 			if (nome.equals(auxiliarNome)) {
