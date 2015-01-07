@@ -25,6 +25,6 @@ public interface IRepositorioMedico {
 	
 	public abstract Medico exibirPorLogin(String login, String senha);
 
-	public abstract void verificarLogin(String login, String senha) throws NaoEncontradoException;
+	public abstract Medico verificarLogin(String login, String senha) throws NaoEncontradoException;
 
 }

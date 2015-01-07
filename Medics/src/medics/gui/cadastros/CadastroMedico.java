@@ -398,7 +398,7 @@ public class CadastroMedico extends JFrame {
 					JOptionPane.showMessageDialog(null,
 							"Especialidade inválida ! ", "Medics",
 							JOptionPane.ERROR_MESSAGE);
-				} else if (cpf.getText().equals("") || cpf.getText().length() < 7) {
+				} else if (cpf.getValue() == null) {
 					JOptionPane.showMessageDialog(null, "CPF inválido !",
 							"Medics", JOptionPane.ERROR_MESSAGE);
 				} else {

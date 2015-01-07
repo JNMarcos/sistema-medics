@@ -132,7 +132,7 @@ public class EditarPaciente extends JFrame {
 				paciente.setCidade(cidade.getText());
 				paciente.setTelefone(telefone.getText());
 				paciente.setEmail(email.getText());
-
+                fachada.salvarPaciente();
 				
 					JOptionPane.showMessageDialog(null,
 							"Editado com sucesso !");

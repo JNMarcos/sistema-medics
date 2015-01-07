@@ -50,9 +50,9 @@ public class Login extends JPanel {
 					}
 				}else{
 					try {
-						fachada.verificarLoginMedico(login, senha);
+						Medico medico = fachada.verificarLoginMedico(login, senha);
 						frame.setVisible(false);
-						TelaMedico proximaTela = new TelaMedico(null, senha, login);
+						TelaMedico proximaTela = new TelaMedico(medico, senha, login);
 					} catch (NaoEncontradoException e2) {
 	                     invalido.setText("Usuário ou senha inválido.");
                          tfLogin.setText("");

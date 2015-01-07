@@ -130,14 +130,15 @@ public class RepositorioMedico implements IRepositorioMedico, Serializable {
 		
 	}
 
-	public void verificarLogin(String login, String senha)
+	public Medico verificarLogin(String login, String senha)
 			throws NaoEncontradoException {
 		boolean achou = false;
+		Medico medico = null;
 		try {
 			for (int i = 0; i < lista.size(); i++) {
 				if (login.equals(lista.get(i).getLogin())
 						&& senha.equals(lista.get(i).getSenha()))
-					achou = true;
+					achou = true; medico = lista.get(i);
 			}
 
 			if (achou == false)
@@ -147,6 +148,8 @@ public class RepositorioMedico implements IRepositorioMedico, Serializable {
 			throw new NaoEncontradoException();
 
 		}
+		
+		return medico;
 	
 	}
 	

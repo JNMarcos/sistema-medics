@@ -88,7 +88,7 @@ public  class PrimeiraTela extends JFrame {
 		
 			}
 		});
-		btnMdico.setBounds(90, 69, 89, 23);
+		btnMdico.setBounds(79, 69, 110, 23);
 		contentPane.add(btnMdico);
 		
 		JButton btnSecretria = new JButton("Secret\u00E1ria");
@@ -102,8 +102,8 @@ public  class PrimeiraTela extends JFrame {
 	            validate();
 			}
 		});
-		btnSecretria.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btnSecretria.setBounds(90, 103, 89, 23);
+		//btnSecretria.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		btnSecretria.setBounds(79, 103, 110, 23);
 		contentPane.add(btnSecretria);
 		
 		JButton btnSair = new JButton("Sair");
@@ -112,7 +112,7 @@ public  class PrimeiraTela extends JFrame {
 				System.exit(1);
 			}
 		});
-		btnSair.setBounds(90, 137, 89, 23);
+		btnSair.setBounds(79, 137, 110, 23);
 		contentPane.add(btnSair);
 
 	}

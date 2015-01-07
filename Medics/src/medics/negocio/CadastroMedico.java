@@ -29,9 +29,9 @@ public class CadastroMedico {
 
 	}
 
-	public void verificarLogin(String login, String senha)
+	public Medico verificarLogin(String login, String senha)
 			throws NaoEncontradoException {
-		repositorio.verificarLogin(login, senha);
+		return repositorio.verificarLogin(login, senha);
 	}
 
 	public void salvar() {

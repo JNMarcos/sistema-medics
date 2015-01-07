@@ -47,7 +47,7 @@ public interface IFachada {
 
 	public abstract void verificarLogin(String login, String senha) throws NaoEncontradoException;
 
-	public abstract void verificarLoginMedico(String login, String senha) throws NaoEncontradoException;
+	public abstract Medico verificarLoginMedico(String login, String senha) throws NaoEncontradoException;
 
 	public abstract void cadastrarConsulta(String cpfPaciente, String cpfMedico,
  String procedimento, String dia, String mes,
@@ -59,5 +59,7 @@ public interface IFachada {
 	public abstract void removerConsulta(String codigo);
 	
 	public abstract ArrayList<Consulta> retornarListaConsulta();
+
+	public abstract void salvarMedico();
 	
 }

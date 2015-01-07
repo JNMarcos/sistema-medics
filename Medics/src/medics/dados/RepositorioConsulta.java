@@ -167,7 +167,7 @@ public class RepositorioConsulta implements IRepositorioConsulta, Serializable {
 			String hora) {
 		boolean achou = false;
 		int indicePesquisa;
-	
+	    
 		for (indicePesquisa = 0; indicePesquisa < lista.size()
 				&& achou == false; indicePesquisa++) {
 			if (codigo.equals(lista.get(indicePesquisa).getCodigo())) {
@@ -179,7 +179,7 @@ public class RepositorioConsulta implements IRepositorioConsulta, Serializable {
 			}
 		}
 
-		// salvarArquivo();
+		 salvarArquivo();
 
 	}
 
@@ -188,12 +188,12 @@ public class RepositorioConsulta implements IRepositorioConsulta, Serializable {
 
 			boolean removeu = false;
 			int i;
-
+            
 			for (i = 0; i < lista.size() && removeu == false; i++) {
 				if (codigo.equals(lista.get(i).getCodigo())) {
 					lista.remove(i);
 					removeu = true;
-					// salvarArquivo();
+					salvarArquivo();
 				}
 			}
 

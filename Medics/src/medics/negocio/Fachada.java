@@ -113,9 +113,9 @@ public class Fachada implements IFachada {
 
 	}
 
-	public void verificarLoginMedico(String login, String senha)
+	public Medico verificarLoginMedico(String login, String senha)
 			throws NaoEncontradoException {
-		cadastroMedico.verificarLogin(login, senha);
+		return cadastroMedico.verificarLogin(login, senha);
 	}
 
 	public void cadastrarConsulta(String cpfPaciente, String cpfMedico,

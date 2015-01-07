@@ -53,6 +53,7 @@ public class CadastroConsulta extends JFrame {
 	private DefaultTableModel modeloMedico = new DefaultTableModel();
 	private DefaultTableModel modeloProcedimento = new DefaultTableModel();
 	private JFormattedTextField codigo;
+	boolean naoCadastrar;
 
 	public CadastroConsulta(DefaultTableModel modelo) {
 		setResizable(false);
@@ -187,14 +188,13 @@ public class CadastroConsulta extends JFrame {
 
 		ano.setBounds(161, 485, 59, 20);
 		contentPane.add(ano);
-		
-	    try {
+		naoCadastrar = false;
+		try {
 			codigo = new JFormattedTextField(new MaskFormatter("######"));
 		} catch (ParseException e3) {
+			System.out.println("cheguei");
+			naoCadastrar = true;
 			codigo.setText("");
-			JOptionPane.showMessageDialog(null,
-					"Código inválido ! ", "Medics",
-					JOptionPane.ERROR_MESSAGE);
 			e3.printStackTrace();
 		}
 		codigo.setBounds(449, 485, 67, 20);
@@ -203,63 +203,63 @@ public class CadastroConsulta extends JFrame {
 		JButton btnNewButton = new JButton("Cadastrar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-					int paciente_selecionado = pacientes.getSelectedRow();
-					int medico_selecionado = medicos.getSelectedRow();
-					int procedimento_selecionado = procedimentos
-							.getSelectedRow();
-					String horaEscolhida = null;
-					String cpfPaciente = null;
-					String cpfMedico = null;
-					String procedimento = null;
-					String codigoDigitado = null;
-					String diaData = null;
-					String mesData = null;
-					String anoData = null;
+                
+				int paciente_selecionado = pacientes.getSelectedRow();
+				int medico_selecionado = medicos.getSelectedRow();
+				int procedimento_selecionado = procedimentos.getSelectedRow();
+				String horaEscolhida = null;
+				String cpfPaciente = null;
+				String cpfMedico = null;
+				String procedimento = null;
+				String codigoDigitado = null;
+				String diaData = null;
+				String mesData = null;
+				String anoData = null;
 
-					if (pacientes.getSelectedRow() == -1) {
+				if (pacientes.getSelectedRow() == -1) {
+					JOptionPane.showMessageDialog(null,
+							"Nenhum paciente selecionado!");
+				} else if (medicos.getSelectedRow() == -1) {
+					JOptionPane.showMessageDialog(null,
+							"Nenhum medico selecionado!");
+				} else if (procedimentos.getSelectedRow() == -1) {
+					JOptionPane.showMessageDialog(null,
+							"Nenhum procedimento selecionado!");
+				} else if (codigo.getValue() == null) {
+					JOptionPane
+							.showMessageDialog(null,
+									"Código inválido ! Digite um código válido de 6 digitos.");
+				} else {
+					cpfPaciente = pacientes.getValueAt(paciente_selecionado, 1)
+							.toString();
+					cpfMedico = medicos.getValueAt(medico_selecionado, 1)
+							.toString();
+					procedimento = procedimentos.getValueAt(
+							procedimento_selecionado, 0).toString();
+					horaEscolhida = hora.getValue().toString();
+					codigoDigitado = codigo.getText();
+					diaData = (String) dia.getSelectedItem();
+					mesData = (String) mes.getSelectedItem();
+					anoData = (String) ano.getSelectedItem();
+
+					try {
+
+						fachada.cadastrarConsulta(cpfPaciente, cpfMedico,
+								procedimento, diaData, mesData, anoData,
+								horaEscolhida, codigoDigitado);
 						JOptionPane.showMessageDialog(null,
-								"Nenhum paciente selecionado!");
-					} else if (medicos.getSelectedRow() == -1) {
-						JOptionPane.showMessageDialog(null,
-								"Nenhum medico selecionado!");
-					} else if (procedimentos.getSelectedRow() == -1) {
-						JOptionPane.showMessageDialog(null,
-								"Nenhum procedimento selecionado!");
-					} else if (codigo.getText().equals("")) {
-						JOptionPane.showMessageDialog(null, "Código inválido !",
-								"Medics", JOptionPane.ERROR_MESSAGE);
-					}else {
-						cpfPaciente = pacientes.getValueAt(
-								paciente_selecionado, 1).toString();
-						cpfMedico = medicos.getValueAt(medico_selecionado, 1)
-								.toString();
-						procedimento = procedimentos.getValueAt(
-								procedimento_selecionado, 0).toString();
-						horaEscolhida = hora.getValue().toString();
-						codigoDigitado = codigo.getText();
-						diaData = (String) dia.getSelectedItem();
-						mesData = (String) mes.getSelectedItem();
-						anoData = (String) ano.getSelectedItem();
+								"Cadastrado com sucesso !");
+						setVisible(false);
+						TelaSecretario.carregarTabela(modelo);
 
-						try {
-
-							fachada.cadastrarConsulta(cpfPaciente, cpfMedico,
-									procedimento, diaData, mesData, anoData,
-									horaEscolhida, codigoDigitado);
-							JOptionPane.showMessageDialog(null,
-									"Cadastrado com sucesso !");
-							setVisible(false);
-							TelaSecretario.carregarTabela(modelo);
-
-						} catch (CodigoExistenteException e1) {
-							JOptionPane.showMessageDialog(null, e1, "Medics",
-									JOptionPane.ERROR_MESSAGE);
-						} catch (MedicoOcupadoException e2) {
-							JOptionPane.showMessageDialog(null, e2, "Medics",
-									JOptionPane.ERROR_MESSAGE);
-						}
+					} catch (CodigoExistenteException e1) {
+						JOptionPane.showMessageDialog(null, e1, "Medics",
+								JOptionPane.ERROR_MESSAGE);
+					} catch (MedicoOcupadoException e2) {
+						JOptionPane.showMessageDialog(null, e2, "Medics",
+								JOptionPane.ERROR_MESSAGE);
 					}
+				}
 			}
 		});
 		btnNewButton.setBounds(666, 484, 110, 23);
@@ -277,7 +277,11 @@ public class CadastroConsulta extends JFrame {
 		JLabel lblNewLabel = new JLabel("Codigo:");
 		lblNewLabel.setBounds(398, 488, 46, 14);
 		contentPane.add(lblNewLabel);
-	
+
+		JLabel lblDigitos = new JLabel("6 Digitos");
+		lblDigitos.setBounds(528, 488, 81, 14);
+		contentPane.add(lblDigitos);
+
 	}
 
 	public static void carregarTabelaPacientes(DefaultTableModel modelo) {

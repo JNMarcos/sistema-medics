@@ -10,6 +10,8 @@ import javax.swing.table.DefaultTableModel;
 
 import medics.gui.controladores.Medicos;
 import medics.gui.controladores.Pacientes;
+import medics.negocio.Fachada;
+import medics.negocio.IFachada;
 import medics.negocio.classes_basicas.Medico;
 
 import java.awt.Toolkit;
@@ -24,6 +26,7 @@ import java.awt.event.ActionEvent;
 
 public class EditarMedico extends JFrame {
 	private DefaultTableModel modelo = new DefaultTableModel();
+	public static IFachada fachada = Fachada.getInstance();
 	private JPanel contentPane;
 	private JTextField especialidade;
 	private JTextField login;
@@ -202,7 +205,8 @@ public class EditarMedico extends JFrame {
 				antigoMedico.setLogin(login.getText());
 				antigoMedico.setSenha(senha.getText());
 				antigoMedico.setEspecialidade(especialidade.getText());
-
+				fachada.salvarMedico();				
+                
 				
 					JOptionPane.showMessageDialog(null,
 							"Editado com sucesso !");

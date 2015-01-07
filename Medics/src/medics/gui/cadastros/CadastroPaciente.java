@@ -308,7 +308,7 @@ public class CadastroPaciente extends JFrame {
 				} else if (telefone.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Telefone inválido !",
 							"Medics", JOptionPane.ERROR_MESSAGE);
-				} else if (cpf.getText().equals("") || cpf.getText().length() < 7) {
+				} else if (cpf.getValue() == null) {
 					JOptionPane.showMessageDialog(null, "CPF inválido !",
 							"Medics", JOptionPane.ERROR_MESSAGE);
 				} else {
