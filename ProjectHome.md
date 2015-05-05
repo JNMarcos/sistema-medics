@@ -1,0 +1,1 @@
+Criação de um sistema de consultas que é permitido o cadastro de pacientes, médicos, procedimentos, agendas, assim como sua modificação e remoção. São dois os atores: secretário/a da clínica e médicos.
